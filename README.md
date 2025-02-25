@@ -1,7 +1,7 @@
 # My Learning Notes / Minhas Anotações de Aprendizado
 
 ## Português
-Bem-vindo ao meu repositório de anotações! Aqui eu documento o que aprendo enquanto me torno um desenvolvedor web full stack. Este espaço é para revisar conceitos como `map`, `filter`, `splice` e outros, com exemplos práticos.
+Bem-vindo ao meu repositório de anotações! Aqui eu documento o que aprendo enquanto me torno um desenvolvedor web full stack. 
 
 ### Objetivo
 - Organizar meu aprendizado.
@@ -9,7 +9,7 @@ Bem-vindo ao meu repositório de anotações! Aqui eu documento o que aprendo en
 - Mostrar meu progresso com commits diários.
 
 ## English
-Welcome to my learning notes repository! Here I document what I learn while becoming a full stack web developer. This space is for reviewing concepts like `map`, `filter`, `splice`, and more, with practical examples.
+Welcome to my learning notes repository! Here I document what I learn while becoming a full stack web developer. 
 
 ### Goal
 - Organize my learning journey.
