@@ -11,3 +11,17 @@
 - **Exemplo**:
   ```javascript
   [1, 2, 3].filter(x => x > 1) // [2, 3]
+
+## every
+- **O que faz**: Testa se todos os itens do array passam numa condição, retornando `true` ou `false`.
+- **Exemplo**:
+  ```javascript
+  [1, 2, 3].every(x => x > 0) // true
+  [1, -2, 3].every(x => x > 0) // false
+
+## some
+- **O que faz**: Testa se pelo menos um item do array passa numa condição, retornando `true` ou `false`.
+- **Exemplo**:
+  ```javascript
+  [1, -2, 3].some(x => x < 0) // true
+  [1, 2, 3].some(x => x < 0) // false
