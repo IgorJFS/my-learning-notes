@@ -1,6 +1,6 @@
 # My Learning Notes / Minhas Anotações de Aprendizado
 
-## Português :brazil:
+## Português
 Bem-vindo ao meu repositório de anotações! Aqui eu documento o que aprendo enquanto me torno um desenvolvedor web full stack. 
 
 ### Objetivo
