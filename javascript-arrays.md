@@ -25,3 +25,10 @@
   ```javascript
   [1, -2, 3].some(x => x < 0) // true
   [1, 2, 3].some(x => x < 0) // false
+
+## reduce
+- **O que faz**: Reduz um array a um único valor, aplicando uma função acumuladora a cada item.
+- **Exemplo**:
+```javascript
+[1, 2, 3].reduce((acumulador, atual) => acumulador + atual) // 6
+[1, 2, 3].reduce((acumulador, atual) => acumulador * atual) // 6
