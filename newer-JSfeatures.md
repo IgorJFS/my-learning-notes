@@ -94,4 +94,3 @@ function display({ name, age }) {
 
 const user = { name: "Carlos", age: 30 };
 display(user); // "Nome: Carlos, Idade: 30"
-
