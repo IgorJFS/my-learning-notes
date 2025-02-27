@@ -30,5 +30,21 @@
 - **O que faz**: Reduz um array a um único valor, aplicando uma função acumuladora a cada item.
 - **Exemplo**:
 ```javascript
-[1, 2, 3].reduce((acumulador, atual) => acumulador + atual) // 6
-[1, 2, 3].reduce((acumulador, atual) => acumulador * atual) // 6
+  [1, 2, 3].reduce((acumulador, atual) => acumulador + atual) // 6
+  [1, 2, 3].reduce((acumulador, atual) => acumulador * atual) // 6
+```
+## find
+- **O que faz**: Retorna o primeiro elemento do array que satisfaz a condição especificada.
+- **Exemplo**:
+```javascript
+  [1, 2, 3, 4].find(x => x > 2) // 3
+  [10, 20, 30].find(x => x === 20) // 20
+//segundo exemplo
+  const usuarios = [
+  { id: 1, nome: 'Ana' },
+  { id: 2, nome: 'Bruno' },
+  { id: 3, nome: 'Clara' }
+];
+const usuario = usuarios.find(user => user.id === 2);
+console.log(usuario); // { id: 2, nome: 'Bruno' }
+```
