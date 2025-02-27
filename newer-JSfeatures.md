@@ -13,7 +13,7 @@ function greet(name = "Visitante") {
 console.log(greet());        // "Olá, Visitante!"
 console.log(greet("João")); // "Olá, João!"
 ```
-## 2. Spread in Functions Calls
+2. Spread in Function Calls
 O operador spread (...) pode ser usado para "espalhar" os elementos de um array como argumentos de uma função.
 ```javascript
 
@@ -24,7 +24,7 @@ function sum(a, b, c) {
 const numbers = [1, 2, 3];
 console.log(sum(...numbers)); // 6
 ```
-## 3. Spread with Array Literals
+3. Spread with Array Literals
 Permite criar novos arrays combinando ou clonando outros arrays de forma concisa.
 ```javascript
 
@@ -36,7 +36,7 @@ console.log(arr2); // [1, 2, 3, 4]
 const clone = [...arr1];
 console.log(clone); // [1, 2]
 ```
-## 4. Spread with Objects
+4. Spread with Objects
 Usado para copiar ou combinar propriedades de objetos de maneira simples.
 ```javascript
 
@@ -49,7 +49,7 @@ const defaults = { volume: 50, brightness: 80 };
 const settings = { ...defaults, volume: 75 };
 console.log(settings); // { volume: 75, brightness: 80 }
 ```
-## 5. Rest Params
+5. Rest Params
 O operador rest (...) coleta todos os argumentos restantes em uma função em um único array.
 ```javascript
 
@@ -60,7 +60,7 @@ function logAll(first, ...rest) {
 
 logAll(1, 2, 3, 4, 5);
 ```
-## 6. Destructuring Arrays
+6. Destructuring Arrays
 Permite extrair valores de arrays diretamente em variáveis.
 ```javascript
 
@@ -72,7 +72,7 @@ console.log(x, y, z); // 10 20 30
 const [a, , c] = numbers;
 console.log(a, c); // 10 30
 ```
-## 7. Destructuring Objects
+7. Destructuring Objects
 Extrai propriedades de objetos em variáveis, com a possibilidade de renomear.
 ```javascript
 
@@ -84,7 +84,7 @@ console.log(name, age); // "Ana" 25
 const { name: nome, age: idade } = person;
 console.log(nome, idade); // "Ana" 25
 ```
-## 8. Destructuring Params
+8. Destructuring Params
 Combina desestruturação com parâmetros de função para um código mais elegante.
 ```javascript
 
