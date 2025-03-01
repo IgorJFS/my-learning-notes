@@ -18,18 +18,18 @@ a(); // Executa: "a" -> "b"
 Cada função é empilhada e desempilhada conforme chamada e concluída.
 ```
 ## Web APIs & Single Threaded
-JavaScript é single-threaded (uma tarefa por vez), mas usa Web APIs (fornecidas pelo navegador) para lidar com assincronia, como setTimeout ou fetch.
+JavaScript roda em uma única thread, mas delega tarefas assíncronas às Web APIs (fornecidas pelo navegador, como setTimeout, fetch, ou eventos DOM). Essas APIs trabalham fora da thread principal e devolvem resultados à call stack via uma fila de tarefas (task queue).
 ```javascript
 
 console.log("Start");
 setTimeout(() => console.log("Timeout"), 1000);
 console.log("End");
 // Saída: "Start" -> "End" -> "Timeout" (após 1s)
-
-O setTimeout é enviado à Web API, que o devolve ao call stack depois do tempo.
 ```
+- **O que faz:** O setTimeout manda a função para a Web API, que espera 1 segundo e depois a coloca na fila para ser executada. Isso permite que o código continue sem esperar.
+
 ## Callback Hell
-Callbacks aninhados levam a um código difícil de ler e manter, conhecido como "callback hell".
+Quando usamos callbacks (funções passadas como argumentos para serem chamadas depois), muitos aninhamentos criam o "callback hell": um código confuso, difícil de ler e manter.
 ```javascript
 
 setTimeout(() => {
@@ -45,7 +45,7 @@ setTimeout(() => {
 Problema: Código "piramidal" e propenso a erros.
 ```
 ## Promises
-Promises são objetos que representam o eventual sucesso ou falha de uma operação assíncrona, com métodos .then() e .catch().
+Uma Promise é um objeto que representa o resultado futuro de uma operação assíncrona. Ela pode estar em três estados: pendente (pending), resolvida (fulfilled) com sucesso, ou rejeitada (rejected) com erro. Usamos .then() para sucesso e .catch() para erros.
 ```javascript
 
 const promise = new Promise((resolve, reject) => {
@@ -54,6 +54,8 @@ const promise = new Promise((resolve, reject) => {
 promise.then(result => console.log(result)) // "Sucesso!"
        .catch(error => console.log(error));
 ```
+- **O que faz**: A Promise "promete" um valor futuro. Aqui, após 1s, ela resolve com "Sucesso!", que é capturado por .then(). Se der erro (reject), .catch() lida com isso. Isso evita o callback hell, pois podemos encadear ações.
+
 ## Creating Our Own Promises
 Você pode criar suas próprias promises para encapsular lógica assíncrona.
 ```javascript
@@ -66,7 +68,7 @@ function delay(ms) {
 delay(2000).then(message => console.log(message)); // "Esperou 2000ms"
 ```
 ## Async Keyword
-A palavra-chave async transforma uma função em assíncrona, retornando automaticamente uma Promise.
+A palavra-chave async marca uma função como assíncrona, o que significa que ela sempre retorna uma Promise implicitamente. Isso simplifica o uso de código assíncrono e prepara para o uso de await.
 ```javascript
 
 async function fetchData() {
@@ -74,8 +76,11 @@ async function fetchData() {
 }
 fetchData().then(data => console.log(data)); // "Dados carregados"
 ```
+- **O que faz:** async garante que a função seja tratada como assíncrona, mesmo que não use await internamente. O retorno ("Dados carregados") é automaticamente embrulhado em uma Promise, que podemos acessar com .then().
+
+
 ## Await Keyword
-O await pausa a execução de uma função async até que uma Promise seja resolvida, tornando o código mais legível.
+O await só pode ser usado dentro de uma função async e pausa a execução até que uma Promise seja resolvida, tornando o código assíncrono mais parecido com síncrono e fácil de ler.
 ```javascript
 
 async function getData() {
@@ -84,8 +89,10 @@ async function getData() {
 }
 getData();
 ```
+- **O que faz:** await espera a Promise de delay(1000) resolver antes de prosseguir. Isso evita encadeamentos de .then(), deixando o código mais linear e natural, como se fosse síncrono.
+
 ## Handling Errors In Async Functions
-Use try/catch para tratar erros em funções assíncronas com await.
+Em funções async, usamos try/catch para capturar erros de Promises rejeitadas, mantendo o tratamento de falhas simples e centralizado.
 ```javascript
 
 async function fetchWithError() {
@@ -98,4 +105,7 @@ async function fetchWithError() {
   }
 }
 fetchWithError();
+```
+- **O que faz:** O try tenta executar o código assíncrono. Se a Promise for rejeitada (aqui, com "Erro!"), o catch captura a falha e a trata, evitando que o programa trave.
+
 
