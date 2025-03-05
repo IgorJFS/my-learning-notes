@@ -1,11 +1,15 @@
 # Web Assets Quick Reference
-Lista de CDNs úteis e exemplos de como incluir CSS e JavaScript no HTML. Ideal para copiar e colar rapidamente em projetos web.
+List of useful CNDs. Perfect for copy and paste in web projects.
 
-## CDNs - CSS/JavaScripts and More
+Lista de CDNs úteis. Ideal para copiar e colar em projetos web.
+
+## CDNs - CSS/JavaScripts e mais
+Bootstrap 5.3.3 (JS Included), Jquery 3.7.1, Axios 1.7.2...(more soon)
+
 ## Bootstrap 5.3.3:
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
-**Bootstrap 5.3.3** (JS, inclui Popper.js):
+**Bootstrap 5.3.3** (includes Popper.js):
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 ## jQuery 3.7.1:
