@@ -4,7 +4,7 @@ List of useful CNDs. Perfect for copy and paste in web projects.
 Lista de CDNs úteis. Ideal para copiar e colar em projetos web.
 
 ## CDNs - CSS/JavaScripts e mais
-Bootstrap 5.3.3 (JS Included), Jquery 3.7.1, Axios 1.7.2...(more soon)
+**Bootstrap 5.3.3 (JS Included), Jquery 3.7.1, Axios 1.7.2...(more soon)**
 
 ## Bootstrap 5.3.3:
 ```html
