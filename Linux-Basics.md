@@ -1,4 +1,4 @@
-# Linux Basics: Comandos Essenciais
+# Linux Basics: Comandos Essenciais 🐧
 Linux é um sistema operacional poderoso, usado em servidores, desenvolvimento e até no WSL (Windows Subsystem for Linux). Aqui estão comandos básicos pra navegar, gerenciar arquivos, instalar pacotes e editar código.
 ## Navegação e Exploração
 ``pwd``:
