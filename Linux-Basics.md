@@ -37,7 +37,7 @@ Move ou renomeia arquivos/diretórios.
 Exemplo: `mv velho.txt novo.txt` (renomeia)  
 `mv arquivo.txt /outro/caminho/` (move).
 
-``rm``:
+``rm`` e ``rmdir``:
 Remove arquivos ou diretórios.
 Exemplo: `rm arquivo.txt`  
 `rm -r pasta` remove uma pasta e tudo dentro (cuidado!).
