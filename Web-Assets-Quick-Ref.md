@@ -57,3 +57,18 @@ Inclui Git Bash. Execute o `.exe` e siga as instruções.
 **Git para Linux (via terminal)**: 
 Comando: `sudo apt install git` (Ubuntu/Debian)  
 Rode no terminal da sua VM Linux após `sudo apt update`.
+
+
+## WSL e Ubuntu no Windows (via PowerShell):
+Execute os comandos abaixo no PowerShell como administrador para instalar o WSL (Windows Subsystem for Linux) e o Ubuntu:
+powershell
+
+**Habilita o WSL**
+```html
+wsl --install
+```
+**Após reiniciar o PC, instala o Ubuntu (versão padrão, ex.: 22.04)**
+```html
+wsl --install -d Ubuntu
+```
+Nota: Após o primeiro comando, reinicie o Windows. Depois, rode o segundo comando. Na primeira execução do Ubuntu, configure um usuário e senha.
