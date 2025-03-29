@@ -403,6 +403,273 @@ Para análise avançada, instale o **Wireshark**: `sudo apt install wireshark`.
 
 Veja mais detalhes com `man <comando>` (ex.: `man tcpdump`).
 
+## Gerenciamento de Disco e Armazenamento no Linux:
+No Linux, gerenciar discos e armazenamento envolve verificar espaço, listar dispositivos, montar/desmontar unidades e formatar partições. Isso é essencial para administrar sistemas ou projetos que dependem de arquivos.
+**Verificar uso de disco**:
+```bash
+# Mostra espaço usado/livre em discos montados
+df -h
+```
+`-h`: Formato legível (ex.: GB, MB).
+
+**Listar dispositivos e partições**:
+```bash
+# Lista discos e partições
+lsblk
+# Detalhes sobre dispositivos de bloco
+sudo fdisk -l
+```
+`fdisk -l` requer permissões de root.
+
+**Checar espaço de arquivos/pastas**:
+```bash
+# Mostra tamanho de uma pasta e subpastas
+du -sh /caminho/para/pasta
+```
+`-s`: Soma tudo; `-h`: Formato legível.
+
+**Montar uma unidade**:
+```bash
+# Monta um dispositivo (ex.: pendrive) em um diretório
+sudo mount /dev/sdb1 /mnt
+```
+`/dev/sdb1`: Partição (verifique com `lsblk`).
+
+`/mnt`: Ponto de montagem (crie com `mkdir /mnt` se necessário).
+
+**Desmontar uma unidade**:
+```bash
+sudo umount /mnt
+```
+
+**Formatar uma partição**:  
+Exemplo (formato FAT32):
+```bash
+sudo mkfs.vfat -F 32 /dev/sdb1
+```
+
+**Cuidado**: Isso apaga todos os dados! Confirme o dispositivo com `lsblk`.
+
+**Gerenciar espaço em disco**:  
+Ver arquivos grandes:
+```bash
+# Lista os 10 maiores arquivos em /caminho
+du -ah /caminho | sort -rh | head -n 10
+```
+
+Limpar pacotes órfãos (Ubuntu):
+```bash
+sudo apt autoremove
+```
+
+**Exemplo prático**:  
+Verificar e limpar espaço:
+```bash
+df -h
+du -sh /var/cache
+sudo apt clean
+```
+
+Montar um pendrive e copiar arquivos:
+```bash
+lsblk
+sudo mount /dev/sdc1 /mnt
+cp arquivo.txt /mnt
+sudo umount /mnt
+```
+
+**Dicas**:  
+Use `sudo` para operações em discos.
+
+Para gerenciamento avançado, instale o `gparted`: `sudo apt install gparted`.
+
+## Monitoramento de desempenho com iostat**:
+O `iostat` é uma ferramenta no Linux para monitorar o desempenho da CPU e dos dispositivos de entrada/saída (I/O), como discos. Ele ajuda a identificar gargalos no sistema, seja por uso intenso da CPU ou por operações lentas de disco.
+**Instalação**:  
+Geralmente vem no pacote `sysstat`. Instale com:
+```bash
+sudo apt install sysstat
+```
+
+**Uso básico**:
+```bash
+# Mostra estatísticas desde o boot
+iostat
+# Atualiza a cada 2 segundos
+iostat 2
+```
+
+**Saída explicada (CPU)**:
+A seção de CPU mostra como o processador está sendo usado:
+```bash
+%user   %nice   %system   %iowait   %steal   %idle
+3.50    0.10    1.20      0.30      0.00     94.90
+```
+**%user**: Percentual de tempo da CPU gasto em processos de usuário (ex.: seus scripts ou apps).
+
+**%nice**: Percentual de tempo em processos de usuário com prioridade ajustada (via `nice`).
+
+**%system**: Percentual de tempo em processos do sistema/kernel (ex.: gerenciamento de hardware).
+
+**%iowait**: Percentual de tempo que a CPU ficou ociosa esperando operações de I/O (ex.: leitura/escrita em disco).
+
+**%steal**: Percentual de tempo "roubado" por máquinas virtuais (relevante em VMs, como WSL ou servidores).
+
+**%idle**: Percentual de tempo que a CPU ficou ociosa (sem nada pra fazer).
+
+**Saída explicada (Dispositivos)**:
+A seção de dispositivos mostra o desempenho de discos (ex.: `sda`, `sdb`, `sdc`):
+```bash
+Device   tps    kB_read/s   kB_wrtn/s   kB_read   kB_wrtn
+sda     5.20   120.50      45.30       123456    7890
+sdb     2.10   50.70       10.20       56789     1234
+```
+**Device**: Nome do dispositivo (ex.: `sda` é o primeiro disco, `sdb` o segundo, etc.).
+
+**tps**: Transações por segundo (operações de leitura/escrita).
+
+**kB_read/s**: Quilobytes lidos por segundo.
+
+**kB_wrtn/s**: Quilobytes escritos por segundo.
+
+**kB_read**: Total de quilobytes lidos desde o boot.
+
+**kB_wrtn**: Total de quilobytes escritos desde o boot.
+
+**Exemplo prático**:  
+Monitorar em tempo real:
+```bash
+iostat -x 2
+```
+`-x`: Mostra estatísticas estendidas (mais detalhes).
+
+Identificar gargalo:  
+Se `%iowait` estiver alto (ex.: >20%), o disco pode estar lento.
+
+Se `kB_read/s` ou `kB_wrtn/s` de `sda` estiverem altos, o disco está muito ativo.
+
+**Dicas**:  
+Combine com `df -h` ou `du` pra correlacionar uso de disco com I/O.
+
+Use `iostat -d` pra focar só em dispositivos, sem CPU.
+
+
+## Gerenciamento de serviços com Systemd**:
+O **Systemd** é o sistema de inicialização e gerenciamento de serviços padrão em muitas distribuições Linux modernas (como Ubuntu). Ele substitui o antigo `init` e controla serviços, montagens, logs e outros processos do sistema.
+**O que é**:  
+Um "gerente" que inicia o sistema, gerencia unidades (serviços, dispositivos, etc.) e mantém o estado operacional.
+
+Usa arquivos de configuração chamados "units" (ex.: `.service`, `.timer`).
+
+**Comandos principais**:  
+Ver status de um serviço:
+```bash
+systemctl status nome_do_servico
+```
+Ex.: `systemctl status ssh` (mostra se o SSH está ativo).
+
+Iniciar um serviço:
+```bash
+sudo systemctl start nome_do_servico
+```
+
+Parar um serviço:
+```bash
+sudo systemctl stop nome_do_servico
+```
+
+Habilitar na inicialização:
+```bash
+sudo systemctl enable nome_do_servico
+```
+
+Desabilitar na inicialização:
+```bash
+sudo systemctl disable nome_do_servico
+```
+
+Reiniciar um serviço:
+```bash
+sudo systemctl restart nome_do_servico
+```
+
+Recarregar configurações sem parar:
+```bash
+sudo systemctl reload nome_do_servico
+```
+
+**Listar serviços**:
+```bash
+# Lista todos os serviços ativos
+systemctl list-units --type=service
+# Lista serviços habilitados
+systemctl list-unit-files --type=service
+```
+
+**Logs com journalctl**:  
+O Systemd usa o `journald` pra gerenciar logs:
+```bash
+# Ver todos os logs do sistema
+journalctl
+# Logs de um serviço específico
+journalctl -u nome_do_servico
+# Logs em tempo real
+journalctl -f
+```
+
+**Arquivos de configuração**:  
+Localizados em `/etc/systemd/system/` (customizados) ou `/lib/systemd/system/` (padrão).
+
+Exemplo de um arquivo `.service`:
+```ini
+[Unit]
+Description=Meu Serviço de Exemplo
+After=network.target
+[Service]
+ExecStart=/usr/bin/meu_script.sh
+Restart=always
+[Install]
+WantedBy=multi-user.target
+```
+
+Após editar, recarregue com:
+```bash
+sudo systemctl daemon-reload
+```
+
+**Exemplo prático**:  
+Criar e gerenciar um serviço simples:  
+Crie `/etc/systemd/system/meu-servico.service` com o conteúdo acima.
+
+Ative e inicie:
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable meu-servico
+sudo systemctl start meu-servico
+```
+
+Verifique:
+```bash
+systemctl status meu-servico
+journalctl -u meu-servico
+```
+
+**Outros recursos**:  
+**Timers**: Substituem o Cron para agendamentos. Ex.: `systemctl list-timers`.
+
+**Reboot/Shutdown**:
+```bash
+sudo systemctl reboot
+sudo systemctl poweroff
+```
+
+**Dicas**:  
+Use `systemctl is-active nome_do_servico` pra checar se está rodando (retorna "active" ou "inactive").
+
+Para debug, veja logs detalhados com `journalctl -xe`.
+
+Documentação: `man systemctl` ou `man systemd.service`.
+
 
 
 ## Extras pra Back-end
