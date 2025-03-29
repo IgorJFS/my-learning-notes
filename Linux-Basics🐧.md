@@ -166,7 +166,115 @@ Descompactar: `tar -xzf backup.tar.gz`
 
 **Nota**: Sem `-z`, cria/extrai apenas `.tar` (sem compressão).
 
+## Registro de logs com Syslog:
+O **Syslog** é um sistema padrão no Linux para registrar mensagens de log geradas pelo sistema e por aplicativos. Ele é essencial para monitorar eventos, depurar problemas e auditar atividades.
+**Onde os logs ficam**:  
+Em sistemas como Ubuntu, os logs geralmente estão em `/var/log/syslog` (ou `/var/log/messages` em outras distros).
 
+Outros arquivos comuns: `/var/log/auth.log` (autenticação), `/var/log/kern.log` (kernel).
+
+**Como visualizar logs**:
+```bash
+# Ver todo o conteúdo do syslog
+cat /var/log/syslog
+# Ver em tempo real (atualiza conforme novos logs chegam)
+tail -f /var/log/syslog
+# Filtrar logs específicos (ex.: do Cron)
+grep "CRON" /var/log/syslog
+```
+
+## Estrutura de uma linha de log:  
+Exemplo: `Mar 28 10:00:00 hostname CRON[1234]: (user) CMD (comando)`
+
+Campos: data/hora, nome do host, serviço/processo, PID (entre colchetes), mensagem.
+
+**Configuração**:  
+O arquivo de configuração principal é `/etc/syslog.conf` ou `/etc/rsyslog.conf` (depende da implementação, como `rsyslog` no Ubuntu).
+
+Exemplo de linha: `*.info /var/log/messages` (registra mensagens de nível "info" ou superior).
+
+**Níveis de severidade**:  
+De 0 (emergência) a 7 (debug): emerg, alert, crit, err, warning, notice, info, debug.
+
+Use `logger` pra testar:
+```bash
+logger -p user.info "Teste de log do Igor"
+```
+
+**Exemplo prático**:  
+Verificar falhas de login:
+```bash
+sudo cat /var/log/auth.log | grep "FAILED"
+```
+
+Adicionar um log customizado e verificar:
+```bash
+logger "Backup concluído"
+tail -n 10 /var/log/syslog
+```
+
+**Dicas**:  
+Use `sudo` para acessar logs, pois são protegidos.
+
+Rotação de logs é gerenciada pelo `logrotate` (config em `/etc/logrotate.conf`).
+
+Para mais detalhes, veja `man syslog` ou `man rsyslogd`.
+
+## Regex
+
+**Componentes básicos**
+Retomando um pouco do que abordamos em vídeo, uma regex possui dois componentes básicos. Vamos conferir!
+
+Caracteres literais: correspondem exatamente aos caracteres no texto. Exemplo: abc corresponde à string "abc" no texto.
+
+Metacaracteres: caracteres especiais que possuem significados específicos.
+
+Os principais metacaracteres são:
+
+```.``` (ponto): corresponde a qualquer caractere, exceto quebras de linha. Exemplo: a.b corresponde a "aab", "axb", "a1b", etc.
+
+```^``` (circunflexo): corresponde ao início de uma linha. Exemplo: ^abc corresponde a "abc" apenas no início de uma linha.
+
+```$``` (cifrão): corresponde ao final de uma linha. Exemplo: abc$ corresponde a "abc" apenas no final de uma linha.
+
+```[]```: conjunto de caracteres. Corresponde a qualquer caractere dentro dos colchetes. Exemplo: [aeiou] corresponde a qualquer vogal.
+
+```[^]```: negação dentro de colchetes. Corresponde a qualquer caractere que não esteja dentro dos colchetes. Exemplo: [^a-z] corresponde a qualquer caractere que não seja uma letra minúscula.
+
+```*```: corresponde a zero ou mais repetições do caractere anterior. Exemplo: a* corresponde a "", "a", "aa", "aaa", etc.
+
+```+```: corresponde a uma ou mais repetições do caractere anterior. Exemplo: a+ corresponde a "a", "aa", "aaa", etc., mas não a "" (vazio).
+```?```: corresponde a zero ou uma repetição do caractere anterior. Exemplo: a? corresponde a "" ou "a".
+
+```{n,m}```: corresponde entre n e m repetições do caractere anterior. Exemplo: a{2,4} corresponde a "aa", "aaa" ou "aaaa".
+
+```|```: alternativa. Corresponde a qualquer um dos padrões à esquerda ou à direita do |. Exemplo: cat|dog corresponde a "cat" ou "dog".
+
+```()```: usado para agrupar partes de um padrão ou criar grupos de captura. Exemplo: A expressão regular fail(ed)? busca tanto a palavra "fail" quanto "failed", sendo o "ed" opcional graças ao uso dos parênteses para agrupar e do ponto de interrogação ? para tornar essa parte do padrão opcional.
+Classes de caracteres:
+
+
+```\d```: corresponde a qualquer dígito (equivalente a [0-9]).
+
+```\w```: corresponde a qualquer caractere alfanumérico (letras e números) e o sublinhado (equivalente a [a-zA-Z0-9_]).
+
+```\s```: corresponde a qualquer caractere de espaço em branco (como espaço, tabulação e nova linha).
+
+```\D```: corresponde a qualquer caractere que não seja um dígito.
+
+```\W```: corresponde a qualquer caractere que não seja alfanumérico ou sublinhado.
+
+```\S```: corresponde a qualquer caractere que não seja espaço em branco.
+Expressões regulares estendidas vs. básicas
+Ainda podemos classificar as expressões em dois tipos, são eles:
+
+Expressões regulares básicas: são mais simples e algumas metacaracteres (como ?, +, {}) têm que ser escapados com uma barra invertida (\).
+
+Expressões regulares estendidas: oferecem mais funcionalidades, como não precisar escapar os caracteres ```?```, ```+```, ```{}```, e ```|```.
+
+Em resumo, podemos dizer que regex é essencialmente uma linguagem para criar padrões que correspondem a sequências específicas de caracteres dentro de uma string.
+
+Mas você não precisa decorar todos os caracteres, pois existem diversas ferramentas gratuitas disponíveis na web para auxiliar na criação e validação de expressões regulares. Entre as mais populares estão:
 
 ## Instalação e Gerenciamento de Pacotes
 ``apt update``:
@@ -219,6 +327,82 @@ diff arquivo1.txt arquivo2.txt
 **Exemplo**: Se `arquivo1.txt` tem "ola" e `arquivo2.txt` tem "oi", o resultado mostra as linhas diferentes.
 
 Use `diff -u` para um formato mais legível (unificado).
+
+## Monitoramento de Rede no Linux:
+No Linux, você pode monitorar a rede para verificar conexões, tráfego, portas abertas e desempenho usando ferramentas nativas. Isso é útil para depurar problemas de conectividade, segurança ou desempenho em projetos.
+**Ver interfaces de rede**:
+```bash
+# Lista interfaces de rede e status
+ip link show
+# Alternativa mais detalhada
+ifconfig
+```
+
+**Checar endereços IP**:
+```bash
+# Mostra IPs associados às interfaces
+ip addr show
+```
+
+**Monitorar tráfego em tempo real**:  
+Use o `iftop` (instale com `sudo apt install iftop`):
+```bash
+sudo iftop
+```
+Mostra uso de banda por conexão (como um "top" para rede).
+
+**Listar portas abertas e conexões**:  
+Use o `netstat` (instale com `sudo apt install net-tools` se necessário):
+```bash
+# Lista todas as portas abertas e conexões
+netstat -tuln
+# Inclui processos associados
+netstat -tulnp
+```
+
+Alternativa moderna com `ss`:
+```bash
+# Lista portas e conexões
+ss -tuln
+```
+
+**Testar conectividade**:
+```bash
+# Pinga um host pra verificar alcance
+ping google.com
+# Testa uma porta específica (ex.: 80)
+nc -zv google.com 80
+```
+`nc` (netcat) pode precisar ser instalado: `sudo apt install netcat`.
+
+**Capturar pacotes**:  
+Use o `tcpdump` (instale com `sudo apt install tcpdump`):
+```bash
+# Captura tráfego na interface eth0
+sudo tcpdump -i eth0
+# Salva em um arquivo pra análise
+sudo tcpdump -i eth0 -w captura.pcap
+```
+
+**Exemplo prático**:  
+Verificar se um servidor web local está ativo:
+```bash
+ss -tuln | grep ":80"
+```
+
+Monitorar tráfego de uma API:
+```bash
+sudo tcpdump -i any port 443 -c 100
+```
+Captura 100 pacotes na porta 443 (HTTPS).
+
+**Dicas**:  
+Use `sudo` pra comandos que acessam dados privilegiados.
+
+Para análise avançada, instale o **Wireshark**: `sudo apt install wireshark`.
+
+Veja mais detalhes com `man <comando>` (ex.: `man tcpdump`).
+
 
 
 ## Extras pra Back-end
