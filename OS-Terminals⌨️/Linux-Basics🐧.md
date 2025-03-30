@@ -483,7 +483,7 @@ Use `sudo` para operações em discos.
 
 Para gerenciamento avançado, instale o `gparted`: `sudo apt install gparted`.
 
-## Monitoramento de desempenho com iostat**:
+## Monitoramento de desempenho com iostat:
 O `iostat` é uma ferramenta no Linux para monitorar o desempenho da CPU e dos dispositivos de entrada/saída (I/O), como discos. Ele ajuda a identificar gargalos no sistema, seja por uso intenso da CPU ou por operações lentas de disco.
 **Instalação**:  
 Geralmente vem no pacote `sysstat`. Instale com:
@@ -554,7 +554,7 @@ Combine com `df -h` ou `du` pra correlacionar uso de disco com I/O.
 Use `iostat -d` pra focar só em dispositivos, sem CPU.
 
 
-## Gerenciamento de serviços com Systemd**:
+## Gerenciamento de serviços com Systemd:
 O **Systemd** é o sistema de inicialização e gerenciamento de serviços padrão em muitas distribuições Linux modernas (como Ubuntu). Ele substitui o antigo `init` e controla serviços, montagens, logs e outros processos do sistema.
 **O que é**:  
 Um "gerente" que inicia o sistema, gerencia unidades (serviços, dispositivos, etc.) e mantém o estado operacional.
