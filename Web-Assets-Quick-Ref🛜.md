@@ -72,3 +72,23 @@ wsl --install
 wsl --install -d Ubuntu
 ```
 Nota: Após o primeiro comando, reinicie o Windows. Depois, rode o segundo comando. Na primeira execução do Ubuntu, configure um usuário e senha.
+
+## Download e Instalação do Nginx
+**Windows:**  
+Link: https://nginx.org/en/download.html  
+
+Baixe a versão estável (ex.: `nginx-1.27.4.zip`), extraia em `C:\Tools\nginx-1.27.4`, e rode `nginx.exe`.
+
+**Linux (Ubuntu/Debian):**  
+Método:
+```bash
+sudo apt update
+sudo apt install nginx
+sudo systemctl start nginx
+sudo systemctl enable nginx
+```  
+
+Verifique: `nginx -v`.  
+
+Configuração em: `/etc/nginx/nginx.conf`.
+
