@@ -92,3 +92,10 @@ Verifique: `nginx -v`.
 
 Configuração em: `/etc/nginx/nginx.conf`.
 
+## APIs
+
+**Swagger**
+
+Link para o site do Swagger https://swagger.io/
+
+Download para o Swagger Editor https://swagger.io/tools/swagger-editor/download/
