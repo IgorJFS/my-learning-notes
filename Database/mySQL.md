@@ -1,5 +1,5 @@
-O que é MySQL?
-**MySQL** é um sistema de gerenciamento de banco de dados relacional (RDBMS) open-source, baseado em SQL (Structured Query Language).  
+# O que é MySQL?
+```MySQL``` é um sistema de gerenciamento de banco de dados relacional (RDBMS) open-source, baseado em SQL (Structured Query Language).  
 
 Criado nos anos 90, é amplamente usado em aplicações web (ex.: WordPress, PHP).  
 
@@ -10,24 +10,6 @@ Suporta tabelas relacionais (chaves primárias, estrangeiras).
 
 Multiplataforma (Windows, Linux, etc.).
 
-Instalação
-**Windows:**  
-Baixe em mysql.com/downloads.  
-
-Instale o MySQL Server e o Workbench (interface gráfica).  
-
-Rode: `mysql -u root -p` e digite a senha inicial.
-
-**Linux (Ubuntu):**
-```bash
-sudo apt update
-sudo apt install mysql-server
-sudo mysql_secure_installation  # Configura senha e segurança
-sudo systemctl start mysql
-sudo systemctl enable mysql
-```  
-Acesse: `mysql -u root -p`.
-
 Conceitos Básicos
 **Banco de Dados:** Um "container" pra suas tabelas.  
 
@@ -37,7 +19,7 @@ Conceitos Básicos
 
 **Linhas:** Dados reais inseridos nas colunas.
 
-1. Criando um Banco de Dados
+1. **Criando um Banco de Dados**
 ```sql
 CREATE DATABASE minha_loja;
 USE minha_loja;
@@ -46,7 +28,7 @@ USE minha_loja;
 
 `USE`: Seleciona ele pra trabalhar.
 
-2. Criando Tabelas
+2. **Criando Tabelas**
 Exemplo: Tabela de clientes.
 ```sql
 CREATE TABLE clientes (
@@ -64,7 +46,7 @@ CREATE TABLE clientes (
 
 `data_cadastro`: Data padrão é hoje.
 
-3. Inserindo Dados
+3. **Inserindo Dados**
 ```sql
 INSERT INTO clientes (nome, email)
 VALUES
@@ -73,7 +55,7 @@ VALUES
 ```  
 Insere 2 clientes. O `id` e `data_cadastro` são automáticos.
 
-4. Consultando Dados
+4. **Consultando Dados**
 ```sql
 SELECT * FROM clientes;  -- Tudo
 SELECT nome, email FROM clientes WHERE id = 1;  -- Filtrado
@@ -85,7 +67,7 @@ SELECT COUNT(*) as total FROM clientes;  -- Conta linhas
 
 `as`: Renomeia o resultado.
 
-5. Atualizando Dados
+5. **Atualizando Dados**
 ```sql
 UPDATE clientes
 SET email = 'igor.novo@email.com'
@@ -93,7 +75,7 @@ WHERE id = 1;
 ```  
 Altera o email do cliente com `id = 1`.
 
-6. Deletando Dados
+6. **Deletando Dados**
 ```sql
 DELETE FROM clientes WHERE id = 2;  -- Deleta Ana
 DROP TABLE clientes;  -- Apaga a tabela
@@ -176,7 +158,7 @@ COMMIT;
 ```  
 `LAST_INSERT_ID()`: Pega o `id` do último cliente inserido.
 
-Funções Úteis
+## Funções Úteis
 **String:**
 ```sql
 SELECT UPPER(nome) as nome_maiusculo FROM clientes;  -- "IGOR SILVA"
@@ -195,7 +177,129 @@ SELECT SUM(valor_total) as total_vendas FROM pedidos;  -- Soma valores
 SELECT AVG(valor_total) as media FROM pedidos;  -- Média
 ```
 
-Exemplo Avançado: Loja Completa
+**CAST:**  
+Converte um valor de um tipo pra outro.  
+
+Exemplo: Transforma string em inteiro.
+```sql
+SELECT CAST('123' AS UNSIGNED) as numero;  -- Converte "123" pra 123
+SELECT CAST(15.75 AS CHAR) as texto;  -- Converte 15.75 pra "15.75"
+```
+
+**CONVERT:**  
+Similar ao CAST, mas com suporte a conversão de caracteres (ex.: charset).  
+
+Exemplo: Converte data pra string ou ajusta codificação.
+```sql
+SELECT CONVERT('2025-04-10', CHAR) as data_texto;  -- "2025-04-10" como texto
+SELECT CONVERT(500, DECIMAL(5,2)) as decimal_valor;  -- 500.00
+```
+
+**STR_TO_DATE:**  
+Transforma uma string em data, especificando o formato.  
+
+Exemplo: Converte "10/04/2025" pra data MySQL.
+```sql
+SELECT STR_TO_DATE('10/04/2025', '%d/%m/%Y') as data_formatada;  -- 2025-04-10
+SELECT STR_TO_DATE('2025-04-10 14:30', '%Y-%m-%d %H:%i') as data_hora;
+```  
+
+Formatos: `%d` = dia, `%m` = mês, `%Y` = ano 4 dígitos, `%H` = hora, `%i` = minutos.
+
+
+## Operações de Conjunto
+MySQL suporta operações pra combinar ou comparar resultados de várias consultas.  
+
+**Nota:** Nem todas (ex.: EXCEPT, INTERSECT) são nativas no MySQL, mas vou mostrar alternativas.  
+
+**UNION:**  
+Combina resultados de duas ou mais consultas, removendo duplicatas.  
+
+As colunas devem ter o mesmo número e tipos compatíveis.  
+
+Exemplo: Lista clientes e produtos numa única coluna.
+```sql
+SELECT nome FROM clientes
+UNION
+SELECT nome FROM produtos;
+```  
+
+Resultado: "Igor Silva", "Ana Souza", "Smartphone", "Camiseta" (sem duplicatas).
+
+**UNION ALL:**  
+Igual ao UNION, mas mantém duplicatas.  
+
+Mais rápido por não verificar duplicatas.  
+
+Exemplo: Clientes e produtos, permitindo repetições.
+```sql
+SELECT nome FROM clientes
+UNION ALL
+SELECT nome FROM produtos;
+```  
+
+Resultado: Pode repetir "Igor Silva" se aparecer em ambas as tabelas.
+
+**EXCEPT:**  
+Retorna linhas da primeira consulta que não estão na segunda.  
+
+**Atenção:** MySQL não suporta EXCEPT nativo, mas usamos LEFT JOIN ou NOT IN.  
+
+Exemplo: Clientes sem pedidos.
+```sql
+SELECT c.nome
+FROM clientes c
+LEFT JOIN pedidos p ON c.id = p.cliente_id
+WHERE p.id IS NULL;
+```  
+
+Alternativa com NOT IN:
+```sql
+SELECT nome FROM clientes
+WHERE id NOT IN (SELECT cliente_id FROM pedidos WHERE cliente_id IS NOT NULL);
+```  
+
+Resultado: Só clientes que nunca compraram.
+
+**INTERSECT:**  
+Retorna linhas comuns às duas consultas.  
+
+**Atenção:** MySQL não suporta INTERSECT nativo, mas usamos INNER JOIN ou IN.  
+
+Exemplo: Clientes que também têm pedidos.
+```sql
+SELECT DISTINCT c.nome
+FROM clientes c
+INNER JOIN pedidos p ON c.id = p.cliente_id;
+```  
+
+Alternativa com IN:
+```sql
+SELECT nome FROM clientes
+WHERE id IN (SELECT cliente_id FROM pedidos);
+```  
+
+Resultado: Só clientes com pedidos (ex.: "Igor Silva").
+
+Exemplo Combinado
+Cenário: Queremos uma lista única de nomes (clientes e produtos), depois clientes sem pedidos.
+```sql
+-- UNION pra nomes
+SELECT nome AS item FROM clientes
+UNION
+SELECT nome FROM produtos;
+
+-- EXCEPT simulado pra clientes sem pedidos
+SELECT c.nome
+FROM clientes c
+LEFT JOIN pedidos p ON c.id = p.cliente_id
+WHERE p.id IS NULL;
+`
+
+
+
+
+## Exemplo Avançado: Loja Completa
 Tabelas
 ```sql
 CREATE TABLE categorias (
@@ -265,6 +369,48 @@ mysql -u root -p minha_loja < backup.sql
 DESCRIBE clientes;
 SHOW CREATE TABLE clientes;
 ```
+
+## Declaração de Variável
+
+Declaração de Variável
+**Variáveis** no MySQL permitem armazenar valores temporários em sessões ou scripts.  
+
+Usadas com `SET` ou `DECLARE` (em procedures).  
+
+Exemplo básico com `SET`:
+```sql
+SET @usuario_id
+ = 1;
+SELECT * FROM clientes WHERE id = @usuario_id
+;  -- Usa a variável
+```  
+
+Exemplo com cálculo:
+```sql
+SET @desconto
+ = 0.10;
+SELECT valor_total, (valor_total * (1 - @desconto
+)) as valor_descontado
+FROM pedidos;
+```  
+
+Exemplo em stored procedure com `DECLARE`:
+```sql
+DELIMITER //
+CREATE PROCEDURE get_total_vendas()
+BEGIN
+DECLARE total DECIMAL(10,2);
+SET total = (SELECT SUM(valor_total) FROM pedidos);
+SELECT total AS vendas_totais;
+END //
+DELIMITER ;
+CALL get_total_vendas();
+```  
+
+**Nota:** `@variavel
+` é global na sessão, `DECLARE` é local ao bloco.
+
+
 
 Notas de Aprendizado
 MySQL é simples pra começar, mas poderoso com joins e transações.  

@@ -99,3 +99,23 @@ Configuração em: `/etc/nginx/nginx.conf`.
 Link para o site do Swagger https://swagger.io/
 
 Download para o Swagger Editor https://swagger.io/tools/swagger-editor/download/
+
+## mySQL
+
+Instalação
+**Windows:**  
+Baixe em https://dev.mysql.com/downloads/installer/ 
+
+Instale o MySQL Server e o Workbench (interface gráfica).  
+
+Rode: `mysql -u root -p` e digite a senha inicial.
+
+**Linux (Ubuntu):**
+```bash
+sudo apt update
+sudo apt install mysql-server
+sudo mysql_secure_installation  # Configura senha e segurança
+sudo systemctl start mysql
+sudo systemctl enable mysql
+```  
+Acesse: `mysql -u root -p`.
