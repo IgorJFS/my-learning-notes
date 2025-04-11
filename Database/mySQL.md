@@ -1,185 +1,273 @@
-Maneira codificada (para copiar no VS Code)
-# O que é SQL? Sintaxe Básica com Exemplos
-**SQL** (Structured Query Language) é a linguagem usada pra gerenciar bancos de dados relacionais, como o MySQL. É como um "garçom" que você usa pra pedir, adicionar ou mudar dados. Aqui vamos cobrir os conceitos básicos e avançados com exemplos.
-## O que é SQL?
-SQL é usado pra:
-Criar e organizar tabelas.
+O que é MySQL?
+**MySQL** é um sistema de gerenciamento de banco de dados relacional (RDBMS) open-source, baseado em SQL (Structured Query Language).  
 
-Inserir, buscar, atualizar e deletar dados.
+Criado nos anos 90, é amplamente usado em aplicações web (ex.: WordPress, PHP).  
 
-Relacionar informações entre tabelas.
+Características:  
+Rápido e confiável.  
 
-No MySQL, é essencial pra projetos como sites ou apps.
-## Sintaxe Básica e Exemplos
-### 1. CREATE TABLE - Criar uma tabela
-Define a estrutura dos dados.
+Suporta tabelas relacionais (chaves primárias, estrangeiras).  
+
+Multiplataforma (Windows, Linux, etc.).
+
+Instalação
+**Windows:**  
+Baixe em mysql.com/downloads.  
+
+Instale o MySQL Server e o Workbench (interface gráfica).  
+
+Rode: `mysql -u root -p` e digite a senha inicial.
+
+**Linux (Ubuntu):**
+```bash
+sudo apt update
+sudo apt install mysql-server
+sudo mysql_secure_installation  # Configura senha e segurança
+sudo systemctl start mysql
+sudo systemctl enable mysql
+```  
+Acesse: `mysql -u root -p`.
+
+Conceitos Básicos
+**Banco de Dados:** Um "container" pra suas tabelas.  
+
+**Tabela:** Estrutura com colunas e linhas, como uma planilha.  
+
+**Colunas:** Definidas com tipos (ex.: INT, VARCHAR).  
+
+**Linhas:** Dados reais inseridos nas colunas.
+
+1. Criando um Banco de Dados
 ```sql
-CREATE TABLE usuarios (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  nome VARCHAR(50),
-  email VARCHAR(100)
+CREATE DATABASE minha_loja;
+USE minha_loja;
+```  
+`CREATE DATABASE`: Cria o banco.  
+
+`USE`: Seleciona ele pra trabalhar.
+
+2. Criando Tabelas
+Exemplo: Tabela de clientes.
+```sql
+CREATE TABLE clientes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    data_cadastro DATE DEFAULT CURRENT_DATE
 );
-```
-### 2. INSERT - Adicionar dados
-Insere novas linhas.
+```  
+`id`: Chave primária, autoincrementa (1, 2, 3...).  
+
+`nome`: Texto até 100 caracteres, obrigatório.  
+
+`email`: Único (não repete).  
+
+`data_cadastro`: Data padrão é hoje.
+
+3. Inserindo Dados
 ```sql
-INSERT INTO usuarios (nome, email) 
-VALUES ('Igor', 'igor@email.com');
-```
-### 3. SELECT - Buscar dados
-Recupera informações.
+INSERT INTO clientes (nome, email)
+VALUES
+    ('Igor Silva', 'igor@email.com'),
+    ('Ana Souza', 'ana@email.com');
+```  
+Insere 2 clientes. O `id` e `data_cadastro` são automáticos.
+
+4. Consultando Dados
 ```sql
-SELECT nome, email FROM usuarios WHERE id = 1;
-```
-Busca nome e email do usuário com id 1.
+SELECT * FROM clientes;  -- Tudo
+SELECT nome, email FROM clientes WHERE id = 1;  -- Filtrado
+SELECT COUNT(*) as total FROM clientes;  -- Conta linhas
+```  
+`*`: Todas as colunas.  
 
+`WHERE`: Filtra.  
+
+`as`: Renomeia o resultado.
+
+5. Atualizando Dados
 ```sql
-SELECT * FROM usuarios;
-```
-Pega todos os dados da tabela.
-
-### 4. WHERE - Filtrar resultados
-Especifica condições no SELECT, UPDATE ou DELETE.
-```sql
-SELECT * FROM usuarios WHERE nome = 'Igor';
-```
-Mostra só usuários chamados "Igor".
-
-#### Operadores do WHERE
-= (igual), != (diferente), <, >, <=, >=.
-
-LIKE: Busca padrões (ex.: %igor% pra nomes com "igor").
-
-IN: Verifica numa lista.
-
-BETWEEN: Intervalo.
-
-```sql
-SELECT * FROM usuarios 
-WHERE id BETWEEN 1 AND 5 
-AND email LIKE '%@email
-.com';
-```
-Pega usuários com id de 1 a 5 e email terminando em "@email
-.com".
-
-### 5. JOIN - Juntar tabelas
-Combina dados de várias tabelas usando chaves.
-#### Tipos de JOIN
-**INNER JOIN**: Só linhas que combinam.
-
-**LEFT JOIN**: Tudo da tabela à esquerda, mesmo sem combinação.
-
-**RIGHT JOIN**: Tudo da tabela à direita.
-
-```sql
-CREATE TABLE pedidos (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  usuario_id INT,
-  produto VARCHAR(50)
-);
-INSERT INTO pedidos (usuario_id, produto) 
-VALUES (1, 'Mouse');
-SELECT u.nome, p.produto 
-FROM usuarios u 
-INNER JOIN pedidos p ON u.id = p.usuario_id;
-```
-Mostra o nome do usuário e o produto que ele pediu.
-
-### 6. FOREIGN KEY - Relacionar tabelas
-Garante que uma coluna aponte pra uma chave primária em outra tabela.
-```sql
-CREATE TABLE pedidos (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  usuario_id INT,
-  produto VARCHAR(50),
-  FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-);
-```
-usuario_id em pedidos só aceita valores que existam em usuarios(id).
-
-### 7. ORDER BY - Ordenar resultados
-Organiza os dados.
-```sql
-SELECT * FROM usuarios 
-ORDER BY nome ASC;
-```
-Lista usuários em ordem alfabética (ASC = crescente, DESC = decrescente).
-
-### 8. LIMIT e OFFSET - Controlar quantidade
-LIMIT define quantos resultados, OFFSET pula linhas.
-```sql
-SELECT * FROM usuarios 
-ORDER BY id 
-LIMIT 2 OFFSET 1;
-```
-Pega 2 usuários, pulando o primeiro (mostra o 2º e 3º).
-
-### 9. AS - Renomear colunas ou tabelas
-Dá apelidos pra facilitar.
-```sql
-SELECT nome AS nome_usuario, email AS correo 
-FROM usuarios AS u;
-```
-Renomeia nome pra "nome_usuario" e email pra "correo", apelidando a tabela como u.
-
-### 10. UPDATE - Atualizar dados
-Modifica linhas.
-```sql
-UPDATE usuarios 
-SET email = 'novo@email.com' 
+UPDATE clientes
+SET email = 'igor.novo@email.com'
 WHERE id = 1;
-```
-### 11. DELETE - Deletar dados
-Remove linhas.
+```  
+Altera o email do cliente com `id = 1`.
+
+6. Deletando Dados
 ```sql
-DELETE FROM usuarios 
-WHERE id = 1;
-```
-### 12. ALTER TABLE - Modificar estrutura
-Adiciona ou muda colunas.
+DELETE FROM clientes WHERE id = 2;  -- Deleta Ana
+DROP TABLE clientes;  -- Apaga a tabela
+DROP DATABASE minha_loja;  -- Apaga o banco
+```  
+`DELETE`: Remove linhas específicas.  
+
+`DROP`: Destrói tabelas ou bancos.
+
+Relacionamentos
+Vamos criar um cenário real: uma loja com **clientes** e **pedidos**.  
+Tabela de Pedidos
 ```sql
-ALTER TABLE usuarios 
-ADD idade INT;
-```
-### 13. DROP TABLE - Deletar tabela
-Remove tudo.
-```sql
-DROP TABLE usuarios;
-```
-## Exemplo completo
-Criando e manipulando duas tabelas relacionadas:
-```sql
--- Criar tabelas
-CREATE TABLE usuarios (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  nome VARCHAR(50),
-  email VARCHAR(100)
-);
 CREATE TABLE pedidos (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  usuario_id INT,
-  produto VARCHAR(50),
-  FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id INT,
+    valor_total DECIMAL(10, 2),
+    data_pedido DATE,
+    FOREIGN KEY (cliente_id) REFERENCES clientes(id)
 );
--- Inserir dados
-INSERT INTO usuarios (nome, email) VALUES ('Igor', 'igor@email.com');
-INSERT INTO usuarios (nome, email) VALUES ('Ana', 'ana@email.com');
-INSERT INTO pedidos (usuario_id, produto) VALUES (1, 'Mouse');
-INSERT INTO pedidos (usuario_id, produto) VALUES (2, 'Teclado');
--- Buscar com JOIN
-SELECT u.nome AS cliente, p.produto 
-FROM usuarios u 
-INNER JOIN pedidos p ON u.id = p.usuario_id 
-WHERE p.produto LIKE '%o' 
-ORDER BY u.nome 
-LIMIT 1 OFFSET 0;
+```  
+`cliente_id`: Chave estrangeira, liga ao `id` de `clientes`.  
+
+`DECIMAL(10, 2)`: Número com até 10 dígitos, 2 após o decimal (ex.: 12345678.90).
+
+Inserindo Pedidos
+```sql
+INSERT INTO pedidos (cliente_id, valor_total, data_pedido)
+VALUES
+    (1, 150.50, '2025-04-10'),
+    (1, 99.99, '2025-04-11');
+```  
+Joins
+**INNER JOIN:** Combina só linhas com correspondência.
+```sql
+SELECT c.nome, p.valor_total
+FROM clientes c
+INNER JOIN pedidos p ON c.id = p.cliente_id;
+```  
+
+Resultado: Mostra nome do cliente e valor dos pedidos dele.  
+
+**LEFT JOIN:** Inclui todos os clientes, mesmo sem pedidos.
+```sql
+SELECT c.nome, COUNT(p.id) as total_pedidos
+FROM clientes c
+LEFT JOIN pedidos p ON c.id = p.cliente_id
+GROUP BY c.nome;
+```  
+
+`GROUP BY`: Agrupa por nome.  
+
+`COUNT`: Conta pedidos por cliente.
+
+Índices
+**Índices** aceleram consultas, mas tornam inserções mais lentas.
+```sql
+CREATE INDEX idx_nome ON clientes(nome);
+```  
+
+Cria índice na coluna `nome` pra buscas rápidas.  
+
+Índice único (já usado em `email`):
+```sql
+ALTER TABLE clientes ADD UNIQUE (email);
 ```
-Resultado: "Igor" e "Mouse" (filtra produtos com "o", ordena por nome, pega o 1º).
 
-## Dicas pra começar
-**Tipos de dados**: INT, VARCHAR, DECIMAL, etc.
+Transações
+**Transações** garantem que um grupo de comandos seja todo executado ou nenhum.
+```sql
+START TRANSACTION;
 
-**Chave primária**: PRIMARY KEY pra unicidade.
+INSERT INTO clientes (nome, email) VALUES ('João', 'joao@email.com');
+INSERT INTO pedidos (cliente_id, valor_total)
+VALUES (LAST_INSERT_ID(), 200.00);  
+-- Se der erro, desfaz tudo
+-- ROLLBACK;  
+-- Se der certo, confirma
+COMMIT;
+```  
+`LAST_INSERT_ID()`: Pega o `id` do último cliente inserido.
 
-**Teste aos poucos**: Rode cada comando pra entender o efeito.
+Funções Úteis
+**String:**
+```sql
+SELECT UPPER(nome) as nome_maiusculo FROM clientes;  -- "IGOR SILVA"
+SELECT CONCAT(nome, ' - ', email) as info FROM clientes;  -- "Igor Silva - igor@email.com"
+```  
+
+**Data:**
+```sql
+SELECT NOW();  -- Data e hora atual
+SELECT DATEDIFF('2025-04-10', '2025-01-01') as dias;  -- Diferença em dias
+```  
+
+**Agregação:**
+```sql
+SELECT SUM(valor_total) as total_vendas FROM pedidos;  -- Soma valores
+SELECT AVG(valor_total) as media FROM pedidos;  -- Média
+```
+
+Exemplo Avançado: Loja Completa
+Tabelas
+```sql
+CREATE TABLE categorias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50)
+);  
+CREATE TABLE produtos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100),
+    preco DECIMAL(10, 2),
+    categoria_id INT,
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id)
+);  
+CREATE TABLE itens_pedido (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pedido_id INT,
+    produto_id INT,
+    quantidade INT,
+    FOREIGN KEY (pedido_id) REFERENCES pedidos(id),
+    FOREIGN KEY (produto_id) REFERENCES produtos(id)
+);
+```  
+Inserindo Dados
+```sql
+INSERT INTO categorias (nome) VALUES ('Eletrônicos'), ('Roupas');  
+INSERT INTO produtos (nome, preco, categoria_id)
+VALUES
+    ('Smartphone', 999.99, 1),
+    ('Camiseta', 29.90, 2);  
+INSERT INTO pedidos (cliente_id, valor_total) VALUES (1, 1029.89);
+INSERT INTO itens_pedido (pedido_id, produto_id, quantidade)
+VALUES
+    (1, 1, 1),  -- 1 Smartphone
+    (1, 2, 1);  -- 1 Camiseta
+```  
+Consulta Completa
+```sql
+SELECT
+    c.nome AS cliente,
+    p.data_pedido,
+    prod.nome AS produto,
+    cat.nome AS categoria,
+    ip.quantidade,
+    (prod.preco * ip.quantidade) AS subtotal
+FROM clientes c
+INNER JOIN pedidos p ON c.id = p.cliente_id
+INNER JOIN itens_pedido ip ON p.id = ip.pedido_id
+INNER JOIN produtos prod ON ip.produto_id = prod.id
+INNER JOIN categorias cat ON prod.categoria_id = cat.id
+WHERE p.data_pedido >= '2025-01-01';
+```  
+Resultado: Lista detalhada de pedidos com cliente, produto, categoria e subtotal.
+
+Dicas Práticas
+**Backup:**
+```sql
+mysqldump -u root -p minha_loja > backup.sql
+```  
+
+**Restauração:**
+```sql
+mysql -u root -p minha_loja < backup.sql
+```  
+
+**Ver Estrutura:**
+```sql
+DESCRIBE clientes;
+SHOW CREATE TABLE clientes;
+```
+
+Notas de Aprendizado
+MySQL é simples pra começar, mas poderoso com joins e transações.  
+
+Sempre use índices em colunas muito filtradas (ex.: `WHERE`, `JOIN`).  
+
