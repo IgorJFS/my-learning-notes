@@ -119,3 +119,7 @@ sudo systemctl start mysql
 sudo systemctl enable mysql
 ```  
 Acesse: `mysql -u root -p`.
+
+## PostgreSQL
+
+https://www.postgresql.org/download/
