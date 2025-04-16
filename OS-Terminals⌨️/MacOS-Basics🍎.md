@@ -1,6 +1,8 @@
 # macOS Terminal Commands
 **Objetivo:** Dominar o uso do Terminal no macOS, aprendendo comandos essenciais e avançados, com comparações diretas ao Linux pra entender as semelhanças e diferenças.  
-Introdução ao Terminal no macOS
+
+## Introdução ao Terminal no macOS
+
 O **Terminal** no macOS é uma interface de linha de comando baseada em **bash** (até macOS Mojave) e **zsh** (a partir do Catalina, 2019).  
 
 Ele acessa o núcleo Unix do macOS (derivado do BSD), então muitos comandos são iguais ou parecidos com os do Linux.  
@@ -12,7 +14,7 @@ Sistema de arquivos: macOS tem restrições (ex.: SIP - System Integrity Protect
 
 Ferramentas nativas são limitadas; usamos **Homebrew** pra suprir.
 
-Configurando o Terminal
+## Configurando o Terminal
 Abra o Terminal: **Finder > Aplicativos > Utilitários > Terminal** ou use Spotlight (`Cmd + T`).  
 
 Mude pra **zsh** (se não for padrão):
@@ -44,8 +46,8 @@ source ~/.bashrc
 ```  
 Diferença: Linux usa **.bashrc** por padrão pro bash; macOS usa **.zshrc** pro zsh.
 
-Comandos Básicos
-Navegação no Sistema de Arquivos
+## Comandos Básicos
+### Navegação no Sistema de Arquivos
 **Listar arquivos (`ls`):**
 ```bash
 ls -l  # Lista com detalhes
@@ -84,7 +86,7 @@ pwd
 ```  
 Idêntico.
 
-Gerenciamento de Arquivos
+## Gerenciamento de Arquivos
 **Criar arquivo (`touch`):**
 ```bash
 touch meu_arquivo.txt
@@ -129,7 +131,7 @@ mv pasta /Users/igor/backup/
 mv arquivo.txt novo_nome.txt
 mv pasta /home/igor/backup/
 ```  
-Mesma lógica, só muda o caminho base.
+## Mesma lógica, só muda o caminho base.
 
 **Remover (`rm`):**
 ```bash
@@ -145,7 +147,7 @@ rm -rf pasta
 ```  
 Idêntico. **Cuidado:** `-rf` é perigoso em ambos!
 
-Visualizar Arquivos
+## Visualizar Arquivos
 **Ler arquivo (`cat`):**
 ```bash
 cat arquivo.txt
@@ -178,7 +180,7 @@ tail -n 5 arquivo.txt
 ```  
 Mesmos comandos.
 
-Gerenciamento de Pacotes com Homebrew
+## Gerenciamento de Pacotes com Homebrew
 **Homebrew** é o gerenciador de pacotes do macOS, como **apt** ou **yum** no Linux.  
 
 Instale:
@@ -210,7 +212,7 @@ sudo apt remove git
 ```  
 Diferença: **apt** usa **sudo** e é nativo; **brew** é instalado pelo usuário e não precisa **sudo**.
 
-Gerenciamento de Processos
+## Gerenciamento de Processos
 **Listar processos (`ps`):**
 ```bash
 ps aux  # Lista todos com detalhes
@@ -245,7 +247,7 @@ kill -9 1234
 ```  
 Idêntico.
 
-Rede
+## Rede
 **Verificar conectividade (`ping`):**
 ```bash
 ping -c 4 google.com  # Envia 4 pacotes
@@ -278,8 +280,8 @@ nc -zv localhost 8080
 ```  
 Idêntico, mas **nc** precisa estar instalado no Linux (`apt install netcat`).
 
-Comandos Avançados
-Pesquisar Arquivos (`find` e `\mdfind`)
+## Comandos Avançados
+### Pesquisar Arquivos (`find` e `\mdfind`)
 **find:**
 ```bash
 find /Users/igor -name "*.txt"  # Busca arquivos .txt
@@ -303,7 +305,7 @@ locate *.txt  # Após atualizar com 'sudo updatedb'
 ```  
 Diferença: **mdfind** usa o Spotlight (índice macOS); Linux usa **locate** (menos poderoso).
 
-Redirecionamento e Pipes
+## Redirecionamento e Pipes
 **Redirecionar saída:**
 ```bash
 ls -l > lista.txt  # Salva saída
@@ -328,7 +330,7 @@ ls -l | wc -l
 ```  
 Idêntico.
 
-Scripts no Terminal
+## Scripts no Terminal
 Crie um script:
 ```bash
 nano myscript.sh
@@ -355,7 +357,7 @@ chmod +x myscript.sh
 ```  
 Diferença: macOS usa **zsh** por padrão; Linux usa **bash**.
 
-Exemplo Prático: Configurando um Projeto
+## Exemplo Prático: Configurando um Projeto
 Cenário: Você quer criar uma pasta, instalar **Node.js** via brew, e rodar um script.
 ```bash
 mkdir meu_projeto
@@ -380,3 +382,39 @@ node server.js
 ```  
 Diferença: **brew** é mais simples no macOS; **apt** exige **sudo** e instala **npm** separado.
 
+## Dicas Práticas
+**Atalhos:**  
+`Cmd + T`: Nova aba no Terminal.  
+
+`Ctrl + C`: Interrompe comando.  
+
+`Ctrl + D`: Sai do Terminal.  
+
+Linux tem os mesmos (`Ctrl + C`, `Ctrl + D`), mas não usa **Cmd**.
+
+**Permissões:**
+```bash
+sudo chmod -R 755 /Users/igor/pasta
+```  
+**Linux equivalente:**
+```bash
+sudo chmod -R 755 /home/igor/pasta
+```  
+Igual, só muda o caminho.
+
+**Xcode CLI (exclusivo macOS):**
+```bash
+xcode-select --install  # Instala ferramentas como git, make
+```  
+**Linux equivalente:**
+```bash
+sudo apt install build-essential
+```  
+Diferença: Linux já vem com muitas ferramentas; macOS precisa do Xcode CLI.
+
+## Notas de Aprendizado
+macOS e Linux são primos Unix, então 90% dos comandos são iguais.  
+
+**Homebrew** é seu melhor amigo no macOS, como **apt** no Linux.  
+
+Explore **zsh** pra personalizar seu Terminal! 
