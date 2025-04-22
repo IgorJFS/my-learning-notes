@@ -123,3 +123,8 @@ Acesse: `mysql -u root -p`.
 ## PostgreSQL
 
 https://www.postgresql.org/download/
+
+## Docker
+
+Download do Docker Desktop
+Baixe o Docker Desktop pra macOS, Windows ou Linux em: https://www.docker.com/products/docker-desktop/
