@@ -202,5 +202,3 @@ http {
 * Operações custosas: Limitar requisições que consomem muitos recursos do servidor (ex: geração de relatórios complexos).
 * Webhooks e integrações com terceiros.
 * Qualquer endpoint que possa ser alvo de abuso ou sobrecarga.
-
-
