@@ -110,5 +110,3 @@ if os.path.exists(input_path):
 else:
     print('Arquivo de entrada não existe.')
 ```
-
----
