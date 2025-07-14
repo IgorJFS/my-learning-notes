@@ -276,15 +276,15 @@ requests==2.28.1 --hash=sha256:7c5599b102feddaa661c826c56ab4fee28bfd17f5abbca...
 
 ## 7. Comparação Rápida
 
-| Característica | pip | pipenv | poetry | PDM |
-|----------------|-----|--------|--------|-----|
-| Gerencia ambiente virtual | Não | Sim | Sim | Sim |
-| Resolução de dependências | Básica | Avançada | Avançada | Avançada |
-| Arquivo de configuração | requirements.txt | Pipfile | pyproject.toml | pyproject.toml |
-| Arquivo de lock | Não | Pipfile.lock | poetry.lock | pdm.lock |
-| Dependências de dev | Manual | Sim | Sim | Sim |
-| Publicação de pacotes | Não | Não | Sim | Sim |
-| Maturidade | Alta | Média | Média | Baixa |
+| Característica            | pip              | pipenv       | poetry         | PDM            |
+| ------------------------- | ---------------- | ------------ | -------------- | -------------- |
+| Gerencia ambiente virtual | Não              | Sim          | Sim            | Sim            |
+| Resolução de dependências | Básica           | Avançada     | Avançada       | Avançada       |
+| Arquivo de configuração   | requirements.txt | Pipfile      | pyproject.toml | pyproject.toml |
+| Arquivo de lock           | Não              | Pipfile.lock | poetry.lock    | pdm.lock       |
+| Dependências de dev       | Manual           | Sim          | Sim            | Sim            |
+| Publicação de pacotes     | Não              | Não          | Sim            | Sim            |
+| Maturidade                | Alta             | Média        | Média          | Baixa          |
 
 ---
 
